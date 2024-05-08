@@ -1,7 +1,25 @@
 class Solution:
     def findRelativeRanks(self, score: List[int]) -> List[str]:
-        rank = ["Gold Medal", "Silver Medal", "Bronze Medal"] + list(map(str, range(4, len(score) + 1)))
-        place = sorted(score, reverse = True)
-        d = dict(zip(place, rank))
+        N = len(score)
+       
+        # Save the index of each athelete
+        score_to_index = defaultdict(int)
+        for i in range(N):
+            score_to_index[score[i]] = i
 
-        return [d.get(s) for s in score]    
+        # Sort score in descending order
+        score.sort(reverse = True)
+
+        # Assign ranks to athletes
+        rank = [" "] * N
+        for i in range(N):
+            if i == 0:
+                rank[score_to_index[score[i]]] = "Gold Medal"
+            elif i == 1:
+                rank[score_to_index[score[i]]] = "Silver Medal"
+            elif i == 2:
+                rank[score_to_index[score[i]]] = "Bronze Medal"
+            else:
+                rank[score_to_index[score[i]]] = str(i + 1)
+
+        return rank
