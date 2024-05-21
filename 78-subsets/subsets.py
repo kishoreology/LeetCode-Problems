@@ -1,20 +1,25 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        def explore(chosen, remaining, res):
-            if not remaining:
-                res.append(chosen[:])
+        Ans = []
+        n = len(nums)
+
+        # Helper function
+        def Helper(op, start_index):
+            # base case
+            if start_index == n:
+                Ans.append(list(op))
                 return
-            d = remaining.pop(0)
-            #choose
-            chosen.append(d)
-            #explore
-            explore(chosen, remaining, res)
-            chosen.pop()
-            explore(chosen, remaining, res)
-            #unchoose
-            remaining.insert(0, d)
+            
+            # recursive case
+            # choice 1: include the current element
+            op.append(nums[start_index])
+            Helper(op, start_index + 1)
+            
+            # backtracking step
+            op.pop()
+            
+            # choice 2: exclude the current element
+            Helper(op, start_index + 1)
         
-        res = []
-        chosen = []
-        explore(chosen, nums, res)
-        return res
+        Helper([], 0)
+        return Ans
