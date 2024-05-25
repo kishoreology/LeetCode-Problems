@@ -1,3 +1,19 @@
+def fun(s,dc,memo):
+    if(s in memo):
+        return memo[s]
+    ans=[]
+    if(dc[s]==1):
+        ans=[s]
+    for i in range(1,len(s)):
+        if(dc[s[:i]]==1):
+            a=fun(s[i:],dc,memo)
+            for x in a:
+                ans.append(s[:i]+" "+x)
+    memo[s]=ans
+    return ans
 class Solution:
-    def wordBreak(self, s: str, w: List[str]) -> bool:
-        return (f:=lambda i:[s[i:]]*(s[i:] in w)+[s[i:j]+' '+t for j in range(i+1,len(s)) if s[i:j] in w for t in f(j)])(0)
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        dc=defaultdict(lambda:0)
+        for a in wordDict:
+            dc[a]=1
+        return(fun(s,dc,{}))
